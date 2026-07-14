@@ -16,7 +16,6 @@ export function useCartSync() {
   console.log(" Debouncing Starts ");
 
   const { items } = useCart();
-  // If it IS Zustand, keep your original: const items = useCart((state) => state.items);
 
   const debouncedItems = useDebounce(items, 1000);
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export function useDebounce(value, delay) {
-  // ✅ Initialize with undefined/null, not `value` — avoids stale initial state
+  // Initialize with undefined/null, not `value` — avoids stale initial state
   const [debounced, setDebounced] = useState(value);
 
   useEffect(() => {
@@ -10,7 +10,7 @@ export function useDebounce(value, delay) {
     }, delay);
 
     return () => clearTimeout(handler);
-    // ✅ Must compare value by reference — arrays/objects from context
+    // Must compare value by reference — arrays/objects from context
     // re-render each time, so debounce resets correctly
   }, [value, delay]);
 
