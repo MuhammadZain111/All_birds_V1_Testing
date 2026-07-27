@@ -2,32 +2,62 @@ name: Node.js CI & Deploy
 
 on:
   push:
-<<<<<<< HEAD
-    branches: ["main"]
-
-jobs:
-  build:
-    runs-on: self-hosted
-=======
     branches:
       - main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
->>>>>>> e1f8e388f63c975ecb6f55f0d29369e6d8e6c53c
 
     strategy:
       matrix:
         node-version: [22.x]
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
+      # Checkout source code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Install Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "npm"
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: npm test
+          cache: npm
+
+      # Install dependencies
+      - name: Install Dependencies
+        run: npm ci
+
+      # Build application
+      - name: Build Application
+        run: npm run build --if-present
+
+      # Run tests
+      - name: Run Tests
+        run: npm test
+
+      # Deploy to EC2
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            cd /home/ec2-user/your-project
+
+            echo "Pulling latest code..."
+            git pull origin main
+
+            echo "Installing dependencies..."
+            npm install
+
+            echo "Building application..."
+            npm run build
+
+            echo "Restarting PM2..."
+            pm2 restart all
+
+            echo "Deployment completed successfully!"
