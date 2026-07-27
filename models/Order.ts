@@ -26,3 +26,10 @@ const orderSchema = new mongoose.Schema({
     default: "UNPAID",
   },
 });
+
+
+
+const Order =
+  mongoose.models.Order  || mongoose.model("Order", orderSchema);
+
+export default Order;
