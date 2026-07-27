@@ -14,7 +14,7 @@ import { CartItem, CartContextType } from "@/type/cart";
 type Action =
   | { type: "ADD_ITEM"; payload: Omit<CartItem, "quantity"> }
   | { type: "REMOVE_ITEM"; payload: string }
-  | { type: "UPDATE_QTY"; payload: { id: string; quantity: number } }
+  | { type: "UPDATE_QTY"; payload: { _id: string; quantity: number } }
   | { type: "CLEAR_CART" }
   | { type: "LOAD_CART"; payload: CartItem[] };
 
