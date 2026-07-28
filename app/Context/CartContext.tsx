@@ -10,6 +10,10 @@ import {
 import { CartItem, CartContextType } from "@/type/cart";
 
 // ── Actions ─
+// The Action type defines the possible actions that can be dispatched to the cartReducer. Each action has a type and an optional payload, which contains the necessary data for that action. The actions include adding an item, removing an item, updating the quantity of an item, clearing the cart, and loading the cart from localStorage.
+
+
+
 
 type Action =
   | { type: "ADD_ITEM"; payload: Omit<CartItem, "quantity"> }
