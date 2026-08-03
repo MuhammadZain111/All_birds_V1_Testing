@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 
+
+
+// this is the add proedut page
 export default function AddProductPage() {
   const [formData, setFormData] = useState({
     title: "",
