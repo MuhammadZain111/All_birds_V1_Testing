@@ -28,7 +28,7 @@ export default function AddProductPage() {
     { name: "Blue", code: "#0000ff" },
   ];
 
-  // Handle input changes
+  // Handle input changes and it will update the formData state with the new value for the corresponding input field
   const handleChange = (e) => {
     setFormData({
       ...formData,
