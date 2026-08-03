@@ -1,18 +1,14 @@
 name: Node.js CI & Deploy
-
 on:
   push:
     branches:
       - main
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [22.x]
-
     steps:
       # Checkout source code
       - name: Checkout Repository
@@ -37,6 +33,14 @@ jobs:
       - name: Run Tests
         run: npm test
 
+      # Check connectivity to EC2 before attempting SSH
+      - name: Check EC2 host connectivity
+        run: |
+          echo "Pinging host..."
+          ping -c 4 ${{ secrets.EC2_HOST }} || echo "Ping failed (may be blocked by security group, this alone isn't fatal)"
+          echo "Checking if port 22 is reachable..."
+          nc -zv -w5 ${{ secrets.EC2_HOST }} 22
+
       # Deploy to EC2
       - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v1.2.0
@@ -47,17 +51,12 @@ jobs:
           port: 22
           script: |
             cd /home/ec2-user/your-project
-
             echo "Pulling latest code..."
             git pull origin main
-
             echo "Installing dependencies..."
             npm install
-
             echo "Building application..."
             npm run build
-
             echo "Restarting PM2..."
             pm2 restart all
-
             echo "Deployment completed successfully!"
