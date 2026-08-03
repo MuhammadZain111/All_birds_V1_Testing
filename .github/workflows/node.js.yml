@@ -36,9 +36,17 @@ jobs:
       # Check connectivity to EC2 before attempting SSH
       - name: Check EC2 host connectivity
         run: |
+          echo "Installing telnet..."
+          sudo apt-get update -y && sudo apt-get install -y telnet
+
           echo "Pinging host..."
           ping -c 4 ${{ secrets.EC2_HOST }} || echo "Ping failed (may be blocked by security group, this alone isn't fatal)"
-          echo "Checking if port 22 is reachable..."
+
+          echo "Checking port 22 with telnet..."
+          (echo > /dev/tcp/${{ secrets.EC2_HOST }}/22) 2>&1 && echo "Port 22 reachable (bash /dev/tcp check)" || true
+          timeout 5 telnet ${{ secrets.EC2_HOST }} 22 || echo "Telnet check failed or timed out"
+
+          echo "Checking port 22 with nc..."
           nc -zv -w5 ${{ secrets.EC2_HOST }} 22
 
       # Deploy to EC2
