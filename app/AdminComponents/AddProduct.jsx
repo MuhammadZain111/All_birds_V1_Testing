@@ -125,6 +125,8 @@ export default function AddProductPage() {
     }
   };
 
+
+  // here is the code for the AddProduct component, which includes form handling, validation, and submission logic. It manages the state for product details, image upload, and feedback messages for success or error. The form includes fields for title, description, price, category, stock, colors, and an image file input. The handleSubmit function validates the form data and sends it to the backend API endpoint for product creation.
   return (
     <div className="min-h-screen flex items-start justify-center p-6">
       <div className="w-full max-w-2xl bg-white shadow-lg rounded-2xl p-8 border">
