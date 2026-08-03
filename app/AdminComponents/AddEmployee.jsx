@@ -215,6 +215,8 @@ export default function AddEmployee() {
             className="border p-3 rounded-xl text-black"
           />
 
+          
+/
           {/* Submit */}
           <button
             type="submit"
